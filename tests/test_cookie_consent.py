@@ -10,7 +10,7 @@ expected_cookies = [
 ]
 
 @pytest.fixture(scope="function")
-def homepage():
+def browser_context_setup():
     browser_name = os.getenv("BROWSER", "chromium")
     headed = os.getenv("HEADED", "").lower() == "true"
 
@@ -33,8 +33,8 @@ def homepage():
             context.close()
             browser.close()
 
-def test_cookie_consent_flow(homepage):
-    home, context, _ = homepage
+def test_should_set_expected_cookies_after_user_consent(browser_context_setup):
+    home, context, _ = browser_context_setup
 
     home.go_to()
     initial_cookies = context.cookies()
